@@ -10,5 +10,3 @@ DATAPATH = PC_DIR +"recordings/"
 
 
 all_filepaths = glob.glob(DATAPATH + "*.csv")
-for name in all_filepaths:
-    print(detectIntent(name))
