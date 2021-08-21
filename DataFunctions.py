@@ -1,5 +1,5 @@
-from mainProcessing import RECORD_TIME
-from mainProcessing import SAMPLE_RATE
+RECORD_TIME = 1;    # seconds: intent before movement
+SAMPLE_RATE = 50;    # samples wanted per second (cannot exceed 100)
 
 import pandas as pd             # data processing, CSV file I/O (e.g. pd.read_csv)
 import glob
@@ -26,8 +26,15 @@ STATIONARY_STATES = [4,2,5];
 def getSelectRows(row):
     out = []
     for ind in SELECTROWS:
-        out.append(row[SELECTROWS])
+        out.append(row[ind])
     return out
+
+# <-> Converts strings in list cells to numeric
+def numifyStringList(rowList):
+    out = []
+    for i in rowList:
+        out.append(float(i))
+    return(out)
 
 
 
@@ -66,51 +73,55 @@ def categoriseIntent(prevState, nextState):
    
         
     # - We dun goofed, print what number next state was
-    print("nextState N/A: " + state + "," + nextState)
-    return( state +"NA")
+    print("nextState N/A: " + state + "," + str(nextState))
+    return(state +"NA")
    
-
-
-# <-> Label the intent
-def labelIntent(csvList, intentLabel, intent_ID):
-    for listRow in csvList:
-        listRow.append(intentLabel)
-        listRow.append(intent_ID)
-    return listRow
-
-
 
 # <-> Cuts to filter Record time and  Sampling rate
 def sampleIntent(csvList):
     # convert to samples and sample rate
     recordTime = RECORD_TIME*100;
-    sampleRate = 100/SAMPLE_RATE;
+    sampleRate = int(100/SAMPLE_RATE);
     
     endRec = len(csvList)
     startRec = endRec - recordTime;
     
     filterList = []
-    for rowList in range(startRec, endRec, sampleRate):
-        filterList.append = rowList
+    for i in range(startRec, endRec, sampleRate):
+        filterList.append(csvList[i])
     
     return filterList
 
-
+# <-> Label the intent
+def labelIntent(csvList, intentLabel, intent_ID):
+    out = []
+    for listRow in csvList:
+        listRow.append(intentLabel)
+        listRow.append(intent_ID)
+        
+        out.append(listRow)
+    
+    return out
 
 # <-> Converts a list of strings to a string
-def list2string(inlist):
+# tog == True means already string
+#     == False convert cell to string
+def list2string(inlist, tog):
     strlist = ""
     for cell in inlist:
-        strlist += cell + ","
+        if tog:
+            strlist += cell + ","
+        else:
+            strlist += str(cell) + ","
     strlist = strlist[:-1]
     return(strlist)
 
 
 
 # <-> Converts a full csv to string form
-def csvList2String(csvList):
+def csvList2String(csvList,tog):
     outString = ""
     for rowList in csvList:
-        outString = list2string(rowList)
+        outString = list2string(rowList,tog)
         outString = outString +"\n"
     return outString

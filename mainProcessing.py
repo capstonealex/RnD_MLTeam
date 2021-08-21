@@ -1,6 +1,3 @@
-RECORD_TIME = 5;    # seconds: intent before movement
-SAMPLE_RATE = 50;    # samples wanted per second (cannot exceed 100)
-
 from DataFunctions import *     # functions stored in separate file
 
 # LP_DIR = "/mnt/c/Users/david/OneDrive - The University of Melbourne/Work/2021/Capstone/MLTeam//DataProcessing/"
@@ -16,44 +13,51 @@ ID2Intent_index = ""
 for name in all_filepaths:
     
     # Open CSV file and skip (extract) header    
-    with open(name, 'r') as csvfile:
-        reader = csv.reader(csvfile)
-        listHeader = next(reader)
-        listHeader += ["Intent","ExpID"]
-        csvHeader = list2string(listHeader)
-         
-    # Keep looping til end of csv
-        while(next(reader)):
-            row = next(reader)
-            
+    csvfile = open(name, 'r')
+    reader = csv.reader(csvfile)
+    listHeader = next(reader)
+    listHeader = getSelectRows(listHeader) + ["Intent","ExpID"]
+    csvHeader = list2string(listHeader,True)
+        
+    # Propogate loop til end of csv
+    for row in reader:
+        # unstring any number
+        row = numifyStringList(row)
+        
     # - Found stationary State
-            if(row[ID_CURRSTATE] in STATIONARY_STATES):
-                prevState = row[ID_CURRSTATE]        
-                intent_ID += 1
-                
-    # - Collect all the stationary States prior to exo movement
-                capture = []
-                while (row[ID_CURRSTATE] == prevState):
-                    row = next(reader)
-                    capture.append(getSelectRows(row))
-                
-    # - Extracting intent into string CSV 
-                nextState = row[ID_CURRSTATE]
-                intent = categoriseIntent(prevState, nextState)
-                filtCapture = sampleIntent(capture) #-record & sample as global Variables
-                labelledCapture = labelIntent(filtCapture, intent, intent_ID)
-                csvOutput = csvHeader + csvList2String(labelledCapture)
-                
-    # - Automate naming and saving file to directory  
-                f = open(PC_DIR+"csvSegments/"+"Exp-"+intent_ID+"_"+intent+".csv", "w")
-                f.write(csvOutput)
-                f.close()
-                
-    # - MetaData: ID'ing experiments + csvfileName
-                ID2Intent_index += intent_ID + "," + intent + "," (name.split(DATAPATH))[1]+ "\n"
+        if(row[ID_CURRSTATE] in STATIONARY_STATES):
+            prevState = row[ID_CURRSTATE]        
+            intent_ID += 1
+            
+        # - Collect all the stationary States prior to exo movement
+            capture = []
+            for innerRow in reader:
+                innerRow = numifyStringList(innerRow)
+                if not (innerRow[ID_CURRSTATE] == prevState):
+                    break
+                capture.append(getSelectRows(innerRow))
+            
+        # - Extracting intent into string CSV 
+            nextState = innerRow[ID_CURRSTATE]
+            intent = categoriseIntent(prevState, nextState)
+            filtCapture = sampleIntent(capture) #-record & sample as global Variables
+            labelledCapture = labelIntent(filtCapture, intent, intent_ID)
+            csvOutput = csvHeader + csvList2String(labelledCapture, False)
+            
+        # - Automate naming and saving file to directory  
+            f = open(PC_DIR+"csvSegments/"+"Exp-"+str(intent_ID)+"_"+intent+".csv", "w")
+            f.write(csvOutput)
+            f.close()
+            
+        # - MetaData: ID'ing experiments + csvfileName
+             #(name.split(DATAPATH))[1]
+            ID2Intent_index += str(intent_ID) + "," + intent + "," + "\n"
+    
+    csvfile.close()
+    
 
 
-f = open("ExpIDIndex.txt")
+f = open("ExpIDIndex.txt",'w')
 f.write(ID2Intent_index)
 f.close()
 
