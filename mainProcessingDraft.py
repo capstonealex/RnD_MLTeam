@@ -11,18 +11,25 @@ ID2Intent_index = ""
 
 # for all files in record
 for name in all_filepaths:
+    rowCount = 0
+    print("\n"+(name.split(DATAPATH))[1])
     
     # Open CSV file and skip (extract) header    
     csvfile = open(name, 'r')
     reader = csv.reader(csvfile)
     listHeader = next(reader)
-    listHeader += ["Intent","ExpID"]
-    csvHeader = list2string(listHeader)
+    filtHeader = getSelectRows(listHeader) + ["Intent","ExpID"]
+    csvHeader = list2string(filtHeader,True)+"\n"
         
-    # Keep looping til end of csv
-    for row in next(reader):
-        # TODO: remove random spacing
-        # unstring any number
+    # Propogate loop til end of csv
+    for row in reader:
+        rowCount +=1
+        # Skip any unfilled rows (corrupted?)
+        if not len(row) == FILLEDROW:
+            print("unfilled row")
+            continue
+        # Unstring all number
+        row = numifyStringList(row)
         
     # - Found stationary State
         if(row[ID_CURRSTATE] in STATIONARY_STATES):
@@ -31,25 +38,31 @@ for name in all_filepaths:
             
         # - Collect all the stationary States prior to exo movement
             capture = []
-            while (row[ID_CURRSTATE] == prevState):
-                row = next(reader)
-                capture.append(getSelectRows(row))
+            for innerRow in reader:
+                rowCount+=1
+                innerRow = numifyStringList(innerRow)
+                if not (innerRow[ID_CURRSTATE] == prevState):
+                    break
+                capture.append(getSelectRows(innerRow))
             
         # - Extracting intent into string CSV 
-            nextState = row[ID_CURRSTATE]
+            nextState = innerRow[ID_CURRSTATE]
             intent = categoriseIntent(prevState, nextState)
+            if "NA" in intent:
+                print(rowCount)
+                continue
             filtCapture = sampleIntent(capture) #-record & sample as global Variables
             labelledCapture = labelIntent(filtCapture, intent, intent_ID)
-            csvOutput = csvHeader + csvList2String(labelledCapture)
+            csvOutput = csvHeader + csvList2String(labelledCapture, False)
             
         # - Automate naming and saving file to directory  
-            f = open(PC_DIR+"csvSegments/"+"Exp-"+intent_ID+"_"+intent+".csv", "w")
+            f = open(PC_DIR+"csvSegments/"+"Exp-"+str(intent_ID)+"_"+intent+".csv", "w")
             f.write(csvOutput)
             f.close()
             
         # - MetaData: ID'ing experiments + csvfileName
              #(name.split(DATAPATH))[1]
-            ID2Intent_index += intent_ID + "," + intent + "," + "\n"
+            ID2Intent_index += str(intent_ID) + ",\t" + intent + ",\t" + (name.split(DATAPATH))[1]+ "\n"
     
     csvfile.close()
     

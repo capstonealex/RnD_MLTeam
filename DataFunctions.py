@@ -13,11 +13,11 @@ def filenameIntent(filepath):
         if (intent in filepath.lower()):
             return intent
 
-
+FILLEDROW = 44
 
 
 ID_CURRSTATE = -2
-SELECTROWS = [0, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, ID_CURRSTATE]      # time = 0, nonzero features are 29 -> 38 incl
+SELECTROWS = [0,1,2,3,4,5,6,7,8,9,10,11,12,29, 30, 31, 32, 33, 34, 35, 36, 37, 38, ID_CURRSTATE]      # time = 0, nonzero features are 29 -> 38 incl
 STATIONARY_STATES = [4,2,5];
 
 
@@ -43,10 +43,10 @@ TRANSITIONS = ["sit>stand","stand>walk","stand>sit","walk>walk","walk>stand"]
 # <-> Find Category
 def categoriseIntent(prevState, nextState):
     state = ""
-    
+    prevState = int(prevState)
     # - From Sit
     if prevState == 5:
-        state += "sit>"
+        state += "sit~"
         
         if nextState == 7:
             return(state + "stand")
@@ -54,7 +54,7 @@ def categoriseIntent(prevState, nextState):
 
     # - From Stand
     if prevState == 4:
-        state += "stand>"
+        state += "stand~"
         # to Sit
         if nextState == 6:
             return(state + "sit")
@@ -65,7 +65,7 @@ def categoriseIntent(prevState, nextState):
 
     # - From Walk: left or right foot
     if prevState == 2: # or prevState == right footforward
-        state += "walk>"
+        state += "walk~"
         # to Stand
         if nextState == 11: # or nextState == right foot --> stand
             return(state + "stand")
@@ -122,6 +122,6 @@ def list2string(inlist, tog):
 def csvList2String(csvList,tog):
     outString = ""
     for rowList in csvList:
-        outString = list2string(rowList,tog)
+        outString += list2string(rowList,tog)
         outString = outString +"\n"
     return outString

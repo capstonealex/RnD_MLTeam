@@ -11,17 +11,24 @@ ID2Intent_index = ""
 
 # for all files in record
 for name in all_filepaths:
+    rowCount = 0
+    print("\n"+(name.split(DATAPATH))[1])
     
     # Open CSV file and skip (extract) header    
     csvfile = open(name, 'r')
     reader = csv.reader(csvfile)
     listHeader = next(reader)
-    listHeader = getSelectRows(listHeader) + ["Intent","ExpID"]
-    csvHeader = list2string(listHeader,True)
+    filtHeader = getSelectRows(listHeader) + ["Intent","ExpID"]
+    csvHeader = list2string(filtHeader,True)+"\n"
         
     # Propogate loop til end of csv
     for row in reader:
-        # unstring any number
+        rowCount +=1
+        # Skip any unfilled rows (corrupted?)
+        if not len(row) == FILLEDROW:
+            print("unfilled row")
+            continue
+        # Unstring all number
         row = numifyStringList(row)
         
     # - Found stationary State
@@ -32,6 +39,7 @@ for name in all_filepaths:
         # - Collect all the stationary States prior to exo movement
             capture = []
             for innerRow in reader:
+                rowCount+=1
                 innerRow = numifyStringList(innerRow)
                 if not (innerRow[ID_CURRSTATE] == prevState):
                     break
@@ -40,6 +48,9 @@ for name in all_filepaths:
         # - Extracting intent into string CSV 
             nextState = innerRow[ID_CURRSTATE]
             intent = categoriseIntent(prevState, nextState)
+            if "NA" in intent:
+                print(rowCount)
+                continue
             filtCapture = sampleIntent(capture) #-record & sample as global Variables
             labelledCapture = labelIntent(filtCapture, intent, intent_ID)
             csvOutput = csvHeader + csvList2String(labelledCapture, False)
@@ -51,7 +62,7 @@ for name in all_filepaths:
             
         # - MetaData: ID'ing experiments + csvfileName
              #(name.split(DATAPATH))[1]
-            ID2Intent_index += str(intent_ID) + "," + intent + "," + "\n"
+            ID2Intent_index += str(intent_ID) + ",\t" + intent + ",\t" + (name.split(DATAPATH))[1]+ "\n"
     
     csvfile.close()
     
