@@ -83,6 +83,8 @@ def sampleIntent(csvList):
     recordTime = RECORD_TIME*100;
     sampleRate = int(100/SAMPLE_RATE);
     
+    # can add delay here
+    
     endRec = len(csvList)
     startRec = endRec - recordTime;
     
@@ -125,3 +127,14 @@ def csvList2String(csvList,tog):
         outString += list2string(rowList,tog)
         outString = outString +"\n"
     return outString
+
+
+
+# <-> Extracts prev and next State from file name
+def namesplitter(filename):
+    split1 = filename.split('_')[1]
+    split2 = split1.split('~')
+    prevstate = split2[0]
+    nextstate = ((split2[1]).split('.'))[0]
+
+    return((prevstate, nextstate))
