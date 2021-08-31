@@ -1,0 +1,19 @@
+
+Init,           >>  0       # Initial
+InitSitting,    >>  1       # Initial
+LeftForward,    >>  2       # Stationary
+RightForward,   >>  3       # Stationary
+Standing,       >>  4       # Stationary
+Sitting,        >>  5       # Stationary
+SittingDown,    >>  6       # Transition
+StandingUp,     >>  7       # Transition
+StepFirstL,     >>  8       # Unused
+StepFirstR,     >>  9       # Unused
+StepLastL,      >>  10      # Unused
+StepLastR,      >>  11      # Unused
+StepL,          >>  12      # Transition
+StepR,          >>  13      # Transition
+BackStepR,      >>  14      # Transition
+BackStepL,      >>  15      # Transition
+Error,          >>  16      # Safety
+Debug           >>  17      # Safety
