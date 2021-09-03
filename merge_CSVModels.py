@@ -36,7 +36,8 @@ for pathname in intent_filepaths:
         walkModel += csvData
     
     file.close()
-    
+# TODO: LWalk and RWalk
+    # determine if clusters is confused between L & R leg
 
 f = open(DIR_MODEL + "sitCSVData.csv",'w')
 f.write(sitModel)

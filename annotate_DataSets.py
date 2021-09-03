@@ -8,6 +8,9 @@ ARROW = "[->]"
 SPACER = ARROW + 10*' '
 outputTXT = "Filename"+ 42*' ' + SPACER +"Intents\n"+200*'=' + "\n"
 
+# TODO: Add time counter between each state transition
+# function that converts to seconds
+stopwatch = 0
 # Main File Reading
 for name in all_filepaths:
     filename = os.path.basename(name)

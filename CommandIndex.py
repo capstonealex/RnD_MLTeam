@@ -33,6 +33,9 @@ STR_StepR          =  "walk~fwd"        # continue walking using RIGHT leg
 STR_BackStepR      =  "walk~back"       # backstep using RIGHT leg
 STR_BackStepL      =  "stand~back"      # backstep using LEFT leg 
 
+# TODO: LWalk and RWalk
+    # determine if clusters is confused between L & R leg
+
 
 # Misc
 COM_Init           =  0       # Starting
