@@ -89,7 +89,7 @@ print(minStationaryTime)
 print(minTransitionTime)
 
 # output file
-outputTXT = "TimeBounds\n"+200*'='+ minStationaryTime +"\n" + minTransitionTime+"\n\n" + outputTXT
+outputTXT = "TimeBounds\n"+200*'='+"\n"+ minStationaryTime +"\n" + minTransitionTime+"\n\n" + outputTXT
 f = open(FNAME_DESCRIPTION,'w')
 f.write(outputTXT)
 f.close()

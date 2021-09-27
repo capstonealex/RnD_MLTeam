@@ -72,7 +72,8 @@ for name in all_filepaths:
             labelledCapture = labelIntent(filtCapture, intent, intent_ID)
             csvOutput = csvList2String(labelledCapture, False)
             
-        # - Automate naming and saving file to directory  
+        # - Automate naming and saving file to directory
+            csvOutname = "_".join(["Exp-",str(intent_ID),intent,"RT"])
             f = open(DIR_INTENT+"Exp-"+str(intent_ID)+"_"+intent+".csv", "w")
             f.write(csvOutput)
             f.close()
