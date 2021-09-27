@@ -13,13 +13,11 @@ DIR_CWD  = os.getcwd()
 DIR_RAW = DIR_CWD + "/RawRecords/"
 DIR_INTENT = DIR_CWD + "/CSVperIntent/" 
 DIR_MODEL = DIR_CWD + "/Final_CSVperModel/"
-# DIR_META = DIR_CWD + "/ProcessMeta/"
 all_filepaths = glob.glob(DIR_RAW + "*.csv")
 
 # output filenames
 FNAME_EXTRACTION = "extractionIndex.txt"
 FNAME_DESCRIPTION = "intentTrail.txt"
-
 
 def checkDirectoryRAW():
     if not (os.path.isdir(DIR_RAW)):
@@ -34,6 +32,8 @@ def checkMakeDirectoryIntent():
 def checkMakeDirectoryModel():
     if not (os.path.isdir(DIR_MODEL)):
         os.mkdir(DIR_MODEL)
+
+
 
 # =============================================================================
 # === CSV Processing ==========================================================

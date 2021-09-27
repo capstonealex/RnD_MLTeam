@@ -1,0 +1,170 @@
+
+--------------------------------------------------walkFRCSVData--------------------------------------------------
+
+----------------------------------------------------------------------------------------------------
+
+Filename: walkFRCSVData-SR_100-TR_10.csv
+Model Score: 82.85714285714286%
+              precision    recall  f1-score   support
+
+           0       1.00      1.00      1.00        11
+           1       0.76      1.00      0.86        37
+           2       1.00      0.45      0.62        22
+
+    accuracy                           0.83        70
+   macro avg       0.92      0.82      0.83        70
+weighted avg       0.87      0.83      0.81        70
+
+Model Details: SVC(C=1.3421052631578947, decision_function_shape='ovo', probability=True)
+
+----------------------------------------------------------------------------------------------------
+
+Filename: walkFRCSVData-SR_100-TR_100.csv
+Model Score: 80.0%
+              precision    recall  f1-score   support
+
+           0       1.00      1.00      1.00         8
+           1       0.67      1.00      0.80        14
+           2       1.00      0.46      0.63        13
+
+    accuracy                           0.80        35
+   macro avg       0.89      0.82      0.81        35
+weighted avg       0.87      0.80      0.78        35
+
+Model Details: SVC(C=1.131578947368421, decision_function_shape='ovo', probability=True)
+
+----------------------------------------------------------------------------------------------------
+
+Filename: walkFRCSVData-SR_100-TR_20.csv
+Model Score: 81.42857142857143%
+              precision    recall  f1-score   support
+
+           0       1.00      1.00      1.00        11
+           1       0.74      1.00      0.85        37
+           2       1.00      0.41      0.58        22
+
+    accuracy                           0.81        70
+   macro avg       0.91      0.80      0.81        70
+weighted avg       0.86      0.81      0.79        70
+
+Model Details: SVC(C=1.0789473684210527, decision_function_shape='ovo', probability=True)
+
+----------------------------------------------------------------------------------------------------
+
+Filename: walkFRCSVData-SR_100-TR_30.csv
+Model Score: 82.85714285714286%
+              precision    recall  f1-score   support
+
+           0       1.00      1.00      1.00        11
+           1       0.76      1.00      0.86        37
+           2       1.00      0.45      0.62        22
+
+    accuracy                           0.83        70
+   macro avg       0.92      0.82      0.83        70
+weighted avg       0.87      0.83      0.81        70
+
+Model Details: SVC(C=1.131578947368421, decision_function_shape='ovo', kernel='poly',
+    probability=True)
+
+----------------------------------------------------------------------------------------------------
+
+Filename: walkFRCSVData-SR_100-TR_40.csv
+Model Score: 82.85714285714286%
+              precision    recall  f1-score   support
+
+           0       1.00      1.00      1.00        11
+           1       0.76      1.00      0.86        37
+           2       1.00      0.45      0.62        22
+
+    accuracy                           0.83        70
+   macro avg       0.92      0.82      0.83        70
+weighted avg       0.87      0.83      0.81        70
+
+Model Details: SVC(C=1.3421052631578947, decision_function_shape='ovo', kernel='poly',
+    probability=True)
+
+----------------------------------------------------------------------------------------------------
+
+Filename: walkFRCSVData-SR_100-TR_50.csv
+Model Score: 81.42857142857143%
+              precision    recall  f1-score   support
+
+           0       1.00      1.00      1.00        11
+           1       0.75      0.97      0.85        37
+           2       0.91      0.45      0.61        22
+
+    accuracy                           0.81        70
+   macro avg       0.89      0.81      0.82        70
+weighted avg       0.84      0.81      0.80        70
+
+Model Details: SVC(C=0.9210526315789473, decision_function_shape='ovo', kernel='poly',
+    probability=True)
+
+----------------------------------------------------------------------------------------------------
+
+Filename: walkFRCSVData-SR_100-TR_60.csv
+Model Score: 82.85714285714286%
+              precision    recall  f1-score   support
+
+           0       1.00      1.00      1.00        11
+           1       0.76      1.00      0.86        37
+           2       1.00      0.45      0.62        22
+
+    accuracy                           0.83        70
+   macro avg       0.92      0.82      0.83        70
+weighted avg       0.87      0.83      0.81        70
+
+Model Details: SVC(C=1.026315789473684, decision_function_shape='ovo', kernel='poly',
+    probability=True)
+
+----------------------------------------------------------------------------------------------------
+
+Filename: walkFRCSVData-SR_100-TR_70.csv
+Model Score: 82.85714285714286%
+              precision    recall  f1-score   support
+
+           0       1.00      1.00      1.00        11
+           1       0.76      1.00      0.86        37
+           2       1.00      0.45      0.62        22
+
+    accuracy                           0.83        70
+   macro avg       0.92      0.82      0.83        70
+weighted avg       0.87      0.83      0.81        70
+
+Model Details: SVC(C=1.5, decision_function_shape='ovo', probability=True)
+
+----------------------------------------------------------------------------------------------------
+
+Filename: walkFRCSVData-SR_100-TR_80.csv
+Model Score: 82.85714285714286%
+              precision    recall  f1-score   support
+
+           0       1.00      1.00      1.00        11
+           1       0.76      1.00      0.86        37
+           2       1.00      0.45      0.62        22
+
+    accuracy                           0.83        70
+   macro avg       0.92      0.82      0.83        70
+weighted avg       0.87      0.83      0.81        70
+
+Model Details: SVC(C=1.394736842105263, decision_function_shape='ovo', probability=True)
+
+----------------------------------------------------------------------------------------------------
+
+Filename: walkFRCSVData-SR_100-TR_90.csv
+Model Score: 82.85714285714286%
+              precision    recall  f1-score   support
+
+           0       1.00      1.00      1.00        11
+           1       0.76      1.00      0.86        37
+           2       1.00      0.45      0.62        22
+
+    accuracy                           0.83        70
+   macro avg       0.92      0.82      0.83        70
+weighted avg       0.87      0.83      0.81        70
+
+Model Details: SVC(C=1.236842105263158, decision_function_shape='ovo', kernel='poly',
+    probability=True)
+
+----------------------------------------------------------------------------------------------------
+
