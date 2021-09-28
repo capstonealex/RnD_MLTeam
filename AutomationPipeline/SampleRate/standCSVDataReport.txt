@@ -1,0 +1,80 @@
+
+--------------------------------------------------standCSVData--------------------------------------------------
+
+
+
+Filename: standCSVData-SR_10-TR_149.csv
+Model Score: 95.83333333333334%
+              precision    recall  f1-score   support
+
+           0       0.92      1.00      0.96        11
+           1       1.00      0.92      0.96        13
+
+    accuracy                           0.96        24
+   macro avg       0.96      0.96      0.96        24
+weighted avg       0.96      0.96      0.96        24
+
+Model Details: SVC(C=0.5, decision_function_shape='ovo', kernel='linear', probability=True)
+
+----------------------------------------------------------------------------------------------------
+
+Filename: standCSVData-SR_100-TR_149.csv
+Model Score: 97.91666666666666%
+              precision    recall  f1-score   support
+
+           0       0.95      1.00      0.98        20
+           1       1.00      0.96      0.98        28
+
+    accuracy                           0.98        48
+   macro avg       0.98      0.98      0.98        48
+weighted avg       0.98      0.98      0.98        48
+
+Model Details: SVC(C=0.5, decision_function_shape='ovo', kernel='linear', probability=True)
+
+----------------------------------------------------------------------------------------------------
+
+Filename: standCSVData-SR_20-TR_149.csv
+Model Score: 95.83333333333334%
+              precision    recall  f1-score   support
+
+           0       0.91      1.00      0.95        20
+           1       1.00      0.93      0.96        28
+
+    accuracy                           0.96        48
+   macro avg       0.95      0.96      0.96        48
+weighted avg       0.96      0.96      0.96        48
+
+Model Details: SVC(C=0.5, decision_function_shape='ovo', kernel='linear', probability=True)
+
+----------------------------------------------------------------------------------------------------
+
+Filename: standCSVData-SR_25-TR_149.csv
+Model Score: 97.91666666666666%
+              precision    recall  f1-score   support
+
+           0       0.95      1.00      0.98        20
+           1       1.00      0.96      0.98        28
+
+    accuracy                           0.98        48
+   macro avg       0.98      0.98      0.98        48
+weighted avg       0.98      0.98      0.98        48
+
+Model Details: SVC(C=0.5, decision_function_shape='ovo', kernel='linear', probability=True)
+
+----------------------------------------------------------------------------------------------------
+
+Filename: standCSVData-SR_50-TR_149.csv
+Model Score: 97.91666666666666%
+              precision    recall  f1-score   support
+
+           0       0.95      1.00      0.98        20
+           1       1.00      0.96      0.98        28
+
+    accuracy                           0.98        48
+   macro avg       0.98      0.98      0.98        48
+weighted avg       0.98      0.98      0.98        48
+
+Model Details: SVC(C=0.5, decision_function_shape='ovo', kernel='linear', probability=True)
+
+----------------------------------------------------------------------------------------------------
+
