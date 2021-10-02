@@ -71,8 +71,8 @@ ALLSTATES_DIC = {
 # <-> Find Category
 def categoriseIntent(nextState):
     
-    # if(nextState == COM_SittingDown):
-    #     return(STR_SittingDown)
+    if(nextState == COM_SittingDown):
+        return(STR_SittingDown)
     
     # if(nextState == COM_StandingUp):
     #     return(STR_StandingUp)

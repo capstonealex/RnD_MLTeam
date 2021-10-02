@@ -119,3 +119,16 @@ with open("allMLDataPickle", "wb") as outfile:
 # dump(model, model_name)
 # imported_model = load(model_name)
 
+
+# Dictionary JSON structure
+#
+# allMLDATA = {
+#   <str>stationaryState: {
+#               <str>filename: {
+#                                 "metrics"       : jsonResult,
+#                                 "cfm"           : cfm,
+#                                 "testTrainData" : testTrainData,
+#                                 "params"        : params
+#                               }
+#                           }
+#               }

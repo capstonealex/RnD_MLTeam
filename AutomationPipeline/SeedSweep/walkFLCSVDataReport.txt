@@ -1,0 +1,185 @@
+
+--------------------------------------------------walkFLCSVData--------------------------------------------------
+
+
+
+Filename: walkFLCSVData-SR_100-TR_149.csv
+Model Score: 95.52238805970148%
+              precision    recall  f1-score   support
+
+          11       0.96      0.93      0.95        28
+          13       0.95      0.97      0.96        39
+
+    accuracy                           0.96        67
+   macro avg       0.96      0.95      0.95        67
+weighted avg       0.96      0.96      0.96        67
+
+Model Details: SVC(C=0.5, decision_function_shape='ovo', probability=True)
+
+----------------------------------------------------------------------------------------------------
+
+Filename: walkFLCSVData-SR_100-TR_149.csv
+Model Score: 95.52238805970148%
+              precision    recall  f1-score   support
+
+          11       1.00      0.92      0.96        38
+          13       0.91      1.00      0.95        29
+
+    accuracy                           0.96        67
+   macro avg       0.95      0.96      0.95        67
+weighted avg       0.96      0.96      0.96        67
+
+Model Details: SVC(C=0.5, decision_function_shape='ovo', kernel='linear', probability=True)
+
+----------------------------------------------------------------------------------------------------
+
+Filename: walkFLCSVData-SR_100-TR_149.csv
+Model Score: 94.02985074626866%
+              precision    recall  f1-score   support
+
+          11       1.00      0.85      0.92        27
+          13       0.91      1.00      0.95        40
+
+    accuracy                           0.94        67
+   macro avg       0.95      0.93      0.94        67
+weighted avg       0.95      0.94      0.94        67
+
+Model Details: SVC(C=0.7105263157894737, decision_function_shape='ovo', probability=True)
+
+----------------------------------------------------------------------------------------------------
+
+Filename: walkFLCSVData-SR_100-TR_149.csv
+Model Score: 100.0%
+              precision    recall  f1-score   support
+
+          11       1.00      1.00      1.00        28
+          13       1.00      1.00      1.00        39
+
+    accuracy                           1.00        67
+   macro avg       1.00      1.00      1.00        67
+weighted avg       1.00      1.00      1.00        67
+
+Model Details: SVC(C=0.6052631578947368, decision_function_shape='ovo', probability=True)
+
+----------------------------------------------------------------------------------------------------
+
+Filename: walkFLCSVData-SR_100-TR_149.csv
+Model Score: 98.50746268656717%
+              precision    recall  f1-score   support
+
+          11       1.00      0.97      0.98        30
+          13       0.97      1.00      0.99        37
+
+    accuracy                           0.99        67
+   macro avg       0.99      0.98      0.98        67
+weighted avg       0.99      0.99      0.99        67
+
+Model Details: SVC(C=1.3421052631578947, decision_function_shape='ovo', probability=True)
+
+----------------------------------------------------------------------------------------------------
+
+Filename: walkFLCSVData-SR_100-TR_149.csv
+Model Score: 83.5820895522388%
+              precision    recall  f1-score   support
+
+          11       0.85      0.77      0.81        30
+          13       0.82      0.89      0.86        37
+
+    accuracy                           0.84        67
+   macro avg       0.84      0.83      0.83        67
+weighted avg       0.84      0.84      0.83        67
+
+Model Details: SVC(C=1.5, decision_function_shape='ovo', kernel='sigmoid', probability=True)
+
+----------------------------------------------------------------------------------------------------
+
+Filename: walkFLCSVData-SR_100-TR_149.csv
+Model Score: 94.02985074626866%
+              precision    recall  f1-score   support
+
+          11       0.95      0.95      0.95        40
+          13       0.93      0.93      0.93        27
+
+    accuracy                           0.94        67
+   macro avg       0.94      0.94      0.94        67
+weighted avg       0.94      0.94      0.94        67
+
+Model Details: SVC(C=0.5, decision_function_shape='ovo', kernel='linear', probability=True)
+
+----------------------------------------------------------------------------------------------------
+
+Filename: walkFLCSVData-SR_100-TR_149.csv
+Model Score: 98.50746268656717%
+              precision    recall  f1-score   support
+
+          11       1.00      0.97      0.99        35
+          13       0.97      1.00      0.98        32
+
+    accuracy                           0.99        67
+   macro avg       0.98      0.99      0.99        67
+weighted avg       0.99      0.99      0.99        67
+
+Model Details: SVC(C=1.4473684210526314, decision_function_shape='ovo', probability=True)
+
+----------------------------------------------------------------------------------------------------
+
+Filename: walkFLCSVData-SR_100-TR_149.csv
+Model Score: 97.01492537313433%
+              precision    recall  f1-score   support
+
+          11       0.96      0.96      0.96        28
+          13       0.97      0.97      0.97        39
+
+    accuracy                           0.97        67
+   macro avg       0.97      0.97      0.97        67
+weighted avg       0.97      0.97      0.97        67
+
+Model Details: SVC(C=1.131578947368421, decision_function_shape='ovo', probability=True)
+
+----------------------------------------------------------------------------------------------------
+
+Filename: walkFLCSVData-SR_100-TR_149.csv
+Model Score: 98.50746268656717%
+              precision    recall  f1-score   support
+
+          11       1.00      0.97      0.99        36
+          13       0.97      1.00      0.98        31
+
+    accuracy                           0.99        67
+   macro avg       0.98      0.99      0.99        67
+weighted avg       0.99      0.99      0.99        67
+
+Model Details: SVC(C=0.9736842105263157, decision_function_shape='ovo', probability=True)
+
+----------------------------------------------------------------------------------------------------
+
+Filename: walkFLCSVData-SR_100-TR_149.csv
+Model Score: 100.0%
+              precision    recall  f1-score   support
+
+          11       1.00      1.00      1.00        32
+          13       1.00      1.00      1.00        35
+
+    accuracy                           1.00        67
+   macro avg       1.00      1.00      1.00        67
+weighted avg       1.00      1.00      1.00        67
+
+Model Details: SVC(C=1.0789473684210527, decision_function_shape='ovo', probability=True)
+
+----------------------------------------------------------------------------------------------------
+
+Filename: walkFLCSVData-SR_100-TR_149.csv
+Model Score: 97.01492537313433%
+              precision    recall  f1-score   support
+
+          11       1.00      0.93      0.96        27
+          13       0.95      1.00      0.98        40
+
+    accuracy                           0.97        67
+   macro avg       0.98      0.96      0.97        67
+weighted avg       0.97      0.97      0.97        67
+
+Model Details: SVC(C=1.4473684210526314, decision_function_shape='ovo', probability=True)
+
+----------------------------------------------------------------------------------------------------
+

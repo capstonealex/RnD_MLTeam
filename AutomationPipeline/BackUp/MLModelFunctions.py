@@ -234,7 +234,7 @@ def processMLModel(csvFile, seed):
     modelScore = model.score(expinfo_test, intent_test)
     
     testTrainData = {"expinfo_train": expinfo_train.tolist(), "expinfo_test": expinfo_test.tolist(), "intent_train": intent_train.tolist(), "intent_test": intent_test.tolist(), "intent_predict": intent_predict.tolist()}
-    #bp()
+    bp()
     
     
     return(modelScore, bestParams, model, cfm, txtResults, jsonResults, testTrainData)
