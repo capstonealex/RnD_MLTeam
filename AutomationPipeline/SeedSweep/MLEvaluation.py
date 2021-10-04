@@ -31,11 +31,11 @@ for state in statsDict:
     meanList_Recall = []
     stdevList_Recall = []
     
-    meanList_f1 = []
-    stdevList_f1 = []
+    meanList_F1 = []
+    stdevList_F1 = []
     
-    meanList_sup = []
-    stdevList_sup = []
+    meanList_Sup = []
+    stdevList_Sup = []
     
     for intents in statsDict[state]:
         strLabels.append(ALLSTATES_DIC[int(intents)])
@@ -50,12 +50,12 @@ for state in statsDict:
         stdevList_Recall.append((scoresDict['recall'])[1])
         
         # F1 score
-        meanList_f1.append((scoresDict['f1-score'])[0])
-        stdevList_f1.append((scoresDict['f1-score'])[1])
+        meanList_F1.append((scoresDict['f1-score'])[0])
+        stdevList_F1.append((scoresDict['f1-score'])[1])
         
         # Support
-        meanList_sup.append((scoresDict['support'])[0])
-        stdevList_sup.append((scoresDict['support'])[1])
+        meanList_Sup.append((scoresDict['support'])[0])
+        stdevList_Sup.append((scoresDict['support'])[1])
 
 # =============================================================================
 # === Plotting bar charts per State ===========================================
@@ -82,17 +82,17 @@ for state in statsDict:
         
     # Plot bar graph Recall
     fig, ax = plt.subplots()
-    ax.bar(x_pos, meanList_Prec,
-           yerr=stdevList_Prec,
+    ax.bar(x_pos, meanList_Recall,
+           yerr=stdevList_Recall,
            align='center',
            alpha=0.5,
            ecolor='black',
            capsize=10)
 
-    ax.set_ylabel('Precision values')
+    ax.set_ylabel('Recall values')
     ax.set_xticks(x_pos)
     ax.set_xticklabels(strLabels)
-    ax.set_title('Precision Plot for ' + stateLabel)
+    ax.set_title('Recall Plot for ' + stateLabel)
     ax.yaxis.grid(True)
     plt.tight_layout()
     plt.show()
@@ -100,17 +100,17 @@ for state in statsDict:
     
     # Plot bar graph F1 Score
     fig, ax = plt.subplots()
-    ax.bar(x_pos, meanList_Prec,
-           yerr=stdevList_Prec,
+    ax.bar(x_pos, meanList_F1,
+           yerr=stdevList_F1,
            align='center',
            alpha=0.5,
            ecolor='black',
            capsize=10)
 
-    ax.set_ylabel('Precision values')
+    ax.set_ylabel('F1-Score values')
     ax.set_xticks(x_pos)
     ax.set_xticklabels(strLabels)
-    ax.set_title('Precision Plot for ' + stateLabel)
+    ax.set_title('F1-Score Plot for ' + stateLabel)
     ax.yaxis.grid(True)
     plt.tight_layout()
     plt.show()
@@ -118,17 +118,17 @@ for state in statsDict:
     
     # Plot bar graph Support
     fig, ax = plt.subplots()
-    ax.bar(x_pos, meanList_Prec,
-           yerr=stdevList_Prec,
+    ax.bar(x_pos, meanList_Sup,
+           yerr=stdevList_Sup,
            align='center',
            alpha=0.5,
            ecolor='black',
            capsize=10)
 
-    ax.set_ylabel('Precision values')
+    ax.set_ylabel('Support values')
     ax.set_xticks(x_pos)
     ax.set_xticklabels(strLabels)
-    ax.set_title('Precision Plot for ' + stateLabel)
+    ax.set_title('Support Plot for ' + stateLabel)
     ax.yaxis.grid(True)
     plt.tight_layout()
     plt.show()

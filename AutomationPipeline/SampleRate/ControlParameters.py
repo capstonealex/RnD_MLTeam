@@ -27,6 +27,8 @@ SELECTROWS = [0,1,2,3,4,5,6,7,8,9,10,11,12,29,30,31,32,33,34,35,36,37,38,39,40,4
 
 # SELECTROWS = [0,37,38,39,40,41]
 
+SEED_OF_LIFE = 42
+
 # Don't touch these probably
 FILLEDROW = 44              # If exo did a full row reading, sometimes row can come up incomplete (usually end <- termination mid recording)
 ID_CURRSTATE = -2           # left at -2 for multipurpose select of current state

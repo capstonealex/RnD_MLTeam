@@ -7,6 +7,7 @@ Date created:  07/07/2021
 Date modified: 21/09/2021
 """
 import pickle
+from ControlParameters import *
 from MLModelFunctions import *
 from pdb import set_trace as bp
 
@@ -47,7 +48,7 @@ for statState in dic:
         filename = os.path.basename(path) 
         
         # Where the magic happens 
-        seed=0
+        seed = SEED_OF_LIFE
         score, params, model, cfm, txtResult, jsonResult, testTrainData = processMLModel(path, seed)
         # score = basic accuracy metric
         # params = best parameters for the model, keys: {'C', 'kernal'}

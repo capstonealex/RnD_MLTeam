@@ -1,0 +1,21 @@
+
+--------------------------------------------------standCSVData--------------------------------------------------
+
+
+
+Filename: standCSVData-SR_100-TR_149.csv
+Model Score: 100.0%
+              precision    recall  f1-score   support
+
+           6       1.00      1.00      1.00         6
+           8       1.00      1.00      1.00        29
+          15       1.00      1.00      1.00        19
+
+    accuracy                           1.00        54
+   macro avg       1.00      1.00      1.00        54
+weighted avg       1.00      1.00      1.00        54
+
+Model Details: SVC(C=0.5, decision_function_shape='ovo', kernel='sigmoid', probability=True)
+
+----------------------------------------------------------------------------------------------------
+
