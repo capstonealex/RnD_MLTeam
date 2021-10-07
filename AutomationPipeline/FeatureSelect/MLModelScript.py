@@ -41,17 +41,20 @@ BAR = 50*'-'
 metricText = ""
 allMLData = {}
 avgMLStats = {}
+allRocAucStats = {}
 
 for statState in dic:
     stateTitle = "\n"+BAR+statState+BAR+"\n\n\n\n"
     print(BAR,statState,BAR)
     metricText += stateTitle
+    # if statState =='walkFLCSVData':
+    #     continue
     
     
     pathlist = dic[statState]
     # stateMLData = {}
     for path in pathlist:
-        filename = os.path.basename(path) 
+        filename = os.path.basename(path)
         
             
     # -- Outputs of ML Data Generation explained
@@ -62,7 +65,7 @@ for statState in dic:
         # result: txt = text report, json = dictionary object
         # testTrainData dictionary, keys: {'expinfo_train', 'expinfo_test', 'intent_train', 'intent_test', 'intent_predict'}
 
-        score, params, model, cfm, txtResult, jsonResult, testTrainData = processMLModel(path, SEED_OF_LIFE)
+        score, params, model, cfm, rocAuc, txtResult, jsonResult, testTrainData = processMLModel(path, SEED_OF_LIFE)
         # Print to terminal to see progress and log into the output files
         metricText = logMLDataTerminal(SEED_OF_LIFE, filename, score, txtResult, params, model, metricText)
         metricText += "\n\n"+BAR*2+"\n\n"   # formatting
@@ -83,6 +86,7 @@ for statState in dic:
     metricText = ""
     
     # Important data
+    allRocAucStats[statState] = rocAuc
     avgMLStats[statState] = jsonResult
     allMLData[statState] = {"metrics": jsonResult, "cfm": cfm, "testTrainData": testTrainData, "params":params}
 
@@ -93,7 +97,8 @@ with open("allMLDataPickle", "wb") as outfile:
 with open("avgStatsPickle", "wb") as outfile:
     pickle.dump(avgMLStats, outfile)
 
-
+with open("allRocAucStatsPickle", "wb") as outfile:
+    pickle.dump(allRocAucStats, outfile)
 
 ################################################################################
 # Dictionary JSON structure

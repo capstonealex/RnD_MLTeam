@@ -230,19 +230,31 @@ def processMLModel(csvFile, seed):
     model = SVC(C=clf.best_params_['C'], kernel=clf.best_params_['kernel'], probability=True, decision_function_shape='ovo') # INSERT GAMMA HERE
     model.fit(expinfo_train,intent_train)
     intent_predict = model.predict(expinfo_test)
+    intent_percentage = model.predict_proba(expinfo_test)
     
     
-    # Metrics
+    # Collect Metrics
     cfm = metrics.confusion_matrix(intent_test,intent_predict).tolist()        #import 
     txtResults = metrics.classification_report(intent_test,intent_predict)
     jsonResults = metrics.classification_report(intent_test,intent_predict, output_dict = True)
     modelScore = model.score(expinfo_test, intent_test)
+    #bp()
+    
+    # MultiClass ROC_AUC
+    try:
+        macro_roc_auc_ovo = roc_auc_score(intent_test, intent_percentage, multi_class="ovo", average="macro")
+        
+    except ValueError:
+        # Binary ROC_AUC
+        macro_roc_auc_ovo = roc_auc_score(intent_test, intent_percentage[:, 1])
+        
+    rocAuc = {"score": macro_roc_auc_ovo,"proba":intent_percentage}
     
     testTrainData = {"expinfo_train": expinfo_train.tolist(), "expinfo_test": expinfo_test.tolist(), "intent_train": intent_train.tolist(), "intent_test": intent_test.tolist(), "intent_predict": intent_predict.tolist()}
     #bp()
     
     
-    return(modelScore, bestParams, model, cfm, txtResults, jsonResults, testTrainData)
+    return(modelScore, bestParams, model, cfm, rocAuc, txtResults, jsonResults, testTrainData)
 
 
 # =============================================================================
