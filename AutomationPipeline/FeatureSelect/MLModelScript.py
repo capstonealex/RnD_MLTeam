@@ -67,7 +67,7 @@ for statState in dic:
 
         score, params, model, cfm, rocAuc, txtResult, jsonResult, testTrainData = processMLModel(path, SEED_OF_LIFE)
         # Print to terminal to see progress and log into the output files
-        metricText = logMLDataTerminal(SEED_OF_LIFE, filename, score, txtResult, params, model, metricText)
+        metricText = logMLDataTerminal(SEED_OF_LIFE, filename, score, rocAuc, txtResult, params, model, metricText)
         metricText += "\n\n"+BAR*2+"\n\n"   # formatting
 
         # # change this depending on state
@@ -94,6 +94,7 @@ for statState in dic:
 with open("allMLDataPickle", "wb") as outfile:
     pickle.dump(allMLData, outfile)
 
+# Simplified entry just the jsonData per statonary state
 with open("avgStatsPickle", "wb") as outfile:
     pickle.dump(avgMLStats, outfile)
 

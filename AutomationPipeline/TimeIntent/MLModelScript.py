@@ -14,6 +14,8 @@ from pdb import set_trace as bp
 # =============================================================================
 # === Sort files into stationary states =======================================
 # =============================================================================
+# accumulate a list of filepaths per stationary state
+
 merge_filepaths = glob.glob(DIR_MERGE + "*.csv")
 dic = {}
 dic[CSV_STAND] = []
@@ -30,26 +32,32 @@ for path in merge_filepaths:
     if CSV_WALKR in path:
         dic[CSV_WALKR].append(path)
 
+BAR = 50*'-'
 # =============================================================================
 # === ML Model Automation Engine ==============================================
 # =============================================================================
-BAR = 50*'-'
 metricText = ""
+
 allMLData = {}
+allStatsData = {}
+allRocAucData = {}
+
 for statState in dic:
     stateTitle = "\n"+BAR+statState+BAR+"\n\n\n\n"
     print(BAR,statState,BAR)
     metricText += stateTitle
     pathlist = dic[statState]
-    
+    # list of paths taken per state
     
     stateMLData = {}
+    stateStatsData = {}
+    stateROCAUCData = {}
     for path in pathlist:
         filename = os.path.basename(path) 
         
         # Where the magic happens 
         seed = SEED_OF_LIFE
-        score, params, model, cfm, txtResult, jsonResult, testTrainData = processMLModel(path, seed)
+        score, params, model, cfm, rocAuc, txtResult, jsonResult, testTrainData = processMLModel(path, seed)
         # score = basic accuracy metric
         # params = best parameters for the model, keys: {'C', 'kernal'}
         # model = actual ML model for that data set
@@ -62,27 +70,13 @@ for statState in dic:
         # dump(model, model_name)
         
         # Print to terminal to see progress
-        print(filename)
-        print("score: ",100*score,"%")
-        print(txtResult)
-        print(params)
-        print(model)
-        print()
-        
-        
-        # Stuff to put into the output files
-        modelReport=("Filename: " + filename,"Model Score: "+str(score*100)+"%", txtResult, "Model Details: "+str(model))
-        metricText += "\n".join(modelReport)
-        metricText += "\n\n"+BAR*2+"\n\n"
+        metricText = logMLDataTerminal(SEED_OF_LIFE, filename, score, rocAuc, txtResult, params, model, metricText)
+        metricText += "\n\n"+BAR*2+"\n\n"   # formatting
         
         # Important data
         stateMLData[filename] = {"metrics": jsonResult, "testTrainData": testTrainData, "modelObj": model}
-            
-    
-    # In the loop: Plot metrics for one stationary state (use {stateMLData})
-    # ------------------------ can code here --------------------------------- #
-    
-    # ------------------------------------------------------------------------ #
+        stateStatsData[filename] = jsonResult
+        stateROCAUCData[filename] = rocAuc
     # File writer (clears metric text per stationary state)
     f = open(statState+"Report.txt",'w')
     f.write(metricText)
@@ -91,10 +85,17 @@ for statState in dic:
     
     # Important data
     allMLData[statState] = stateMLData
-
+    allStatsData[statState] = stateStatsData
+    allRocAucData[statState] = stateROCAUCData
 # Output Json Object file
 with open("allMLDataPickle", "wb") as outfile:
     pickle.dump(allMLData, outfile)
+
+with open("allStatsDataPickle", "wb") as outfile:
+    pickle.dump(allStatsData, outfile)
+
+with open("allRocAucDataPickle", "wb") as outfile:
+    pickle.dump(allRocAucData, outfile)
 
 # Out the loop: Plot metrics between all stationary states (use {allMLData})
 # ------------------------ or can code here --------------------------------- #

@@ -67,6 +67,29 @@ ALLSTATES_DIC = {
 }
 
 
+def commandStr2Num(com):
+    if(com == STR_SittingDown):
+        return COM_SittingDown
+    if(com == STR_StandingUp):
+        return COM_StandingUp
+    if(com == STR_StepFirstL):
+        return COM_StepFirstL
+    if(com == STR_StepFirstR):
+        return COM_StepFirstR
+    if(com == STR_StepLastL):
+        return COM_StepLastL
+    if(com == STR_StepLastR):
+        return COM_StepLastR
+    if(com == STR_StepL):
+        return COM_StepL
+    if(com == STR_StepR):
+        return COM_StepR
+    if(com == STR_BackStepR):
+        return COM_BackStepR
+    if(com == STR_BackStepL):
+        return COM_BackStepL
+    return(99999)
+
 
 # <-> Find Category
 def categoriseIntent(nextState):

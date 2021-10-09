@@ -245,7 +245,7 @@ def processMLModel(csvFile, seed):
         macro_roc_auc_ovo = roc_auc_score(intent_test, intent_percentage, multi_class="ovo", average="macro")
         
     except ValueError:
-        # Binary ROC_AUC
+    # Binary ROC_AUC
         macro_roc_auc_ovo = roc_auc_score(intent_test, intent_percentage[:, 1])
         
     rocAuc = {"score": macro_roc_auc_ovo,"proba":intent_percentage}
@@ -261,11 +261,12 @@ def processMLModel(csvFile, seed):
 # === Print Metrics to terminal ===============================================
 # =============================================================================
 
-def logMLDataTerminal(seed, filename, score, txtResult, params, model, metricText):
+def logMLDataTerminal(seed, filename, score, rocAuc, txtResult, params, model, metricText):
     #Print to terminal
     print(filename,"- SEED:",seed)
-    print("score: ", 100*score, "%")
+    print("accuracy score: ", 100*score, "%")
     print(txtResult)
+    print("rocAuc score: ", rocAuc["score"])
     print(params)
     print(model)
     print()
@@ -276,3 +277,12 @@ def logMLDataTerminal(seed, filename, score, txtResult, params, model, metricTex
     return metricText
 
 
+# =============================================================================
+# === Split State, SR, TR from file name ======================================
+# =============================================================================
+def splitControlsfromName(filename):
+    tmp = filename.split(".csv")[0]
+    tmpsplit = tmp.split('-')
+    state = tmpsplit[0].split('CSVData')[0]
+    sr = tmpsplit[1].split('SR_')[1]
+    tr = tmpsplit[2].split('TR_')[1]

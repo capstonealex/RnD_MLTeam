@@ -104,11 +104,13 @@ def processMLModel(csvFile, seed):
     unique_intents = np.unique(data.Intent)
     intents = {}
 
-    label = 0                                   # label corresponds to a numerical unique intent starting from 0
-    for i in range(0,len(unique_intents)):
-        intents[unique_intents[i]] = label
-        label += 1
+    # label = 0                                   # label corresponds to a numerical unique intent starting from 0
+    # for i in range(0,len(unique_intents)):
+    #     intents[unique_intents[i]] = label
+    #     label += 1
 
+    for i in unique_intents:
+        intents [i] = commandStr2Num(i) 
     ### Step 3: Adjust dataset to be used in ML model (time-series to supervised)
     ## Step 3a: Get lengths of each experiment for each intention (gives a dictionary of experiment lengths depending on intent) ##
 
@@ -225,6 +227,7 @@ def processMLModel(csvFile, seed):
     model = SVC(C=clf.best_params_['C'], kernel=clf.best_params_['kernel'], probability=True, decision_function_shape='ovo')
     model.fit(expinfo_train,intent_train)
     intent_predict = model.predict(expinfo_test)
+    intent_percentage = model.predict_proba(expinfo_test)
     
     
     # Metrics
@@ -233,9 +236,66 @@ def processMLModel(csvFile, seed):
     jsonResults = metrics.classification_report(intent_test,intent_predict, output_dict = True)
     modelScore = model.score(expinfo_test, intent_test)
     
-    testTrainData = {"expinfo_train": expinfo_train.tolist(), "expinfo_test": expinfo_test.tolist(), "intent_train": intent_train.tolist(), "intent_test": intent_test.tolist(), "intent_predict": intent_predict.tolist()}
-    bp()
-    
-    
-    return(modelScore, bestParams, model, cfm, txtResults, jsonResults, testTrainData)
+    # MultiClass ROC_AUC
+    try:
+        macro_roc_auc_ovo = roc_auc_score(
+            intent_test, intent_percentage, multi_class="ovo", average="macro")
 
+    except ValueError:
+        # Binary ROC_AUC
+        macro_roc_auc_ovo = roc_auc_score(intent_test, intent_percentage[:, 1])
+
+    rocAuc = {"score": macro_roc_auc_ovo, "proba": intent_percentage}
+    
+    testTrainData = {"expinfo_train": expinfo_train.tolist(), "expinfo_test": expinfo_test.tolist(), "intent_train": intent_train.tolist(), "intent_test": intent_test.tolist(), "intent_predict": intent_predict.tolist()}
+
+    
+    return(modelScore, bestParams, model, cfm, rocAuc, txtResults, jsonResults, testTrainData)
+
+# =============================================================================
+# === Print Metrics to terminal ===============================================
+# =============================================================================
+
+
+def logMLDataTerminal(seed, filename, score, rocAuc, txtResult, params, model, metricText):
+    #Print to terminal
+    print(filename, "- SEED:", seed)
+    print("score: ", 100*score, "%")
+    print(txtResult)
+    print("rocAuc score: ", rocAuc['score'])
+    print(params)
+    print(model)
+    print()
+
+    # Stuff to put into the output files
+    modelReport = ("Filename: " + filename, "Model Score: " +
+                   str(score*100)+"%", txtResult, "Model Details: "+str(model))
+    metricText += "\n".join(modelReport)
+    return metricText
+
+
+
+# =============================================================================
+# === Split State, SR, TR from file name ======================================
+# =============================================================================
+def splitControlsfromName(filename):
+    tmp = filename.split(".csv")[0]
+    tmpsplit = tmp.split('-')
+    #state = tmpsplit[0].split('CSVData')[0]
+    sr = tmpsplit[1].split('SR_')[1]
+    tr = tmpsplit[2].split('TR_')[1]
+    
+    return(sr,tr)
+
+
+def zipsort(sortX,followY):
+    tmp = []
+    for i in range(len(sortX)):
+        tmp.append((int(sortX[i]),followY[i]))
+    tmp.sort()
+    Xout = []
+    Yout = []
+    for i in range(len(sortX)):
+        Xout.append(tmp[i][0])
+        Yout.append(tmp[i][1])
+    return(Xout,Yout)

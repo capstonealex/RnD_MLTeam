@@ -80,25 +80,29 @@ for statState in dic:
             # Collect metrics per json result seed for mean and stdev
             resultList.append(jsonResult)
             
-    #Average Metrics
+    # Find Average Metrics
         # filters keys: find intents 
         for exp in resultList:
             keys_metrics = list(exp.keys())
             keys_statMeasures = list(exp[keys_metrics[0]].keys())
             
-            # remove non-intents
+            
             filtkeys = []
             for key in keys_metrics:
+            # extract accuracy
+            
+            # remove non-intents
                 try:
                     int(key)
                 except ValueError:
                     continue
                 filtkeys.append(key)
-        
+            filtkeys.append('accuracy')
         # Collect results
         avg = {}
         for intent in filtkeys:
             # Important data
+            l_accuracy = []
             l_precision = []
             l_recall = []
             l_f1score = []
