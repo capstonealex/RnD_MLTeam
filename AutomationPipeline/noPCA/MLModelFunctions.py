@@ -2,8 +2,7 @@
 # === Imports and Dependencies ================================================ 
 # =============================================================================
 from pdb import set_trace as bp
-from CommandIndex import *
-from ExtractIntentFunctions import * 
+from CommandIndex import * 
 CSV_STAND = "standCSVData"
 CSV_WALKL = "walkFLCSVData"
 CSV_WALKR = "walkFRCSVData"
