@@ -6,6 +6,7 @@ Author(s): Karoline Bernacki, David Pham
 Date created:  07/07/2021
 Date modified: 21/09/2021
 """
+import time
 import pickle
 import statistics as st
 from ControlParameters import *
@@ -42,7 +43,7 @@ metricText = ""
 allMLData = {}
 avgMLStats = {}
 allRocAucStats = {}
-
+start_time = time.time()
 for statState in dic:
     stateTitle = "\n"+BAR+statState+BAR+"\n\n\n\n"
     print(BAR,statState,BAR)
@@ -101,6 +102,8 @@ with open("avgStatsPickle", "wb") as outfile:
 with open("allRocAucStatsPickle", "wb") as outfile:
     pickle.dump(allRocAucStats, outfile)
 
+
+print("--- %s seconds ---" % (time.time() - start_time))
 ################################################################################
 # Dictionary JSON structure
 #

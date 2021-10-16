@@ -39,6 +39,7 @@ BAR = 50*'-'
 metricText = ""
 allMLData = {}
 avgMLStats = {}
+
 for statState in dic:
     stateTitle = "\n"+BAR+statState+BAR+"\n\n\n\n"
     print(BAR,statState,BAR)
@@ -50,9 +51,9 @@ for statState in dic:
     for path in pathlist:
         filename = os.path.basename(path) 
         
-        # Where the magic happens 
         seedMLData = {}
-        resultList = []
+        resultList = []         # results per seed 
+        # Where the magic happens 
         for seed in RAND_SEEDS:
             
         # -- Outputs of ML Data Generation explained
@@ -62,8 +63,8 @@ for statState in dic:
             # cfm = confusion matrix
             # result: txt = text report, json = dictionary object
             # testTrainData dictionary, keys: {'expinfo_train', 'expinfo_test', 'intent_train', 'intent_test', 'intent_predict'}
-
             score, params, model, cfm, txtResult, jsonResult, testTrainData = processMLModel(path, seed)
+
             
             
             # Print to terminal to see progress and log into the output files
@@ -97,12 +98,11 @@ for statState in dic:
                 except ValueError:
                     continue
                 filtkeys.append(key)
-            filtkeys.append('accuracy')
         # Collect results
         avg = {}
+        
         for intent in filtkeys:
             # Important data
-            l_accuracy = []
             l_precision = []
             l_recall = []
             l_f1score = []
@@ -121,6 +121,7 @@ for statState in dic:
             t_support = [st.mean(l_support),st.stdev(l_support)]
         
             avg[intent] = {'precision': t_precision, 'recall': t_recall, 'f1-score': t_f1score, 'support': t_support}
+        
         
             
     

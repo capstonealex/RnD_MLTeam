@@ -5,6 +5,7 @@
 
 Filename: walkFRCSVData-SR_100-TR_149.csv
 Model Score: 86.4406779661017%
+rocAuc score: 0.9789473684210526
               precision    recall  f1-score   support
 
           10       0.74      0.89      0.81        19

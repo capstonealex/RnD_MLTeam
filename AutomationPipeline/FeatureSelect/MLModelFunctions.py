@@ -272,7 +272,7 @@ def logMLDataTerminal(seed, filename, score, rocAuc, txtResult, params, model, m
     print()
 
     # Stuff to put into the output files
-    modelReport = ("Filename: " + filename, "Model Score: " + str(score*100)+"%", txtResult, "Model Details: "+str(model))
+    modelReport = ("Filename: " + filename, "Model Score: " + str(score*100)+"%", "rocAuc score: " + str(rocAuc["score"]), txtResult, "Model Details: "+str(model))
     metricText += "\n".join(modelReport)
     return metricText
 

@@ -1,0 +1,22 @@
+
+--------------------------------------------------walkFRCSVData--------------------------------------------------
+
+
+
+Filename: walkFRCSVData-SR_100-TR_149.csv
+Model Score: 91.52542372881356%
+rocAuc score: 0.9903508771929825
+              precision    recall  f1-score   support
+
+          10       0.82      0.95      0.88        19
+          12       0.96      0.87      0.91        30
+          14       1.00      1.00      1.00        10
+
+    accuracy                           0.92        59
+   macro avg       0.93      0.94      0.93        59
+weighted avg       0.92      0.92      0.92        59
+
+Model Details: SVC(C=0.5, decision_function_shape='ovo', kernel='linear', probability=True)
+
+----------------------------------------------------------------------------------------------------
+
