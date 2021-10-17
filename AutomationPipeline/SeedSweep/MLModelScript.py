@@ -39,7 +39,7 @@ BAR = 50*'-'
 metricText = ""
 allMLData = {}
 avgMLStats = {}
-
+avgMLACCROC = {}
 for statState in dic:
     stateTitle = "\n"+BAR+statState+BAR+"\n\n\n\n"
     print(BAR,statState,BAR)
@@ -47,81 +47,89 @@ for statState in dic:
     
     
     pathlist = dic[statState]
+    path = pathlist[0]
     # stateMLData = {}
-    for path in pathlist:
-        filename = os.path.basename(path) 
+    
+    filename = os.path.basename(path) 
+    
+    seedMLData = {}
+    resultList = []         # results per seed
+    l_accuracy = []         # list of accuracy scores
+    l_rocAuc = []          # list of rocAuc
+# Where the magic happens 
+    for seed in RAND_SEEDS:
         
-        seedMLData = {}
-        resultList = []         # results per seed 
-        # Where the magic happens 
-        for seed in RAND_SEEDS:
-            
-        # -- Outputs of ML Data Generation explained
-            # score = basic accuracy metric
-            # params = best parameters for the model, keys: {'C', 'kernal'}
-            # model = actual ML model for that data set
-            # cfm = confusion matrix
-            # result: txt = text report, json = dictionary object
-            # testTrainData dictionary, keys: {'expinfo_train', 'expinfo_test', 'intent_train', 'intent_test', 'intent_predict'}
-            score, params, model, cfm, txtResult, jsonResult, testTrainData = processMLModel(path, seed)
+    # -- Outputs of ML Data Generation explained
+        # score = basic accuracy metric
+        # params = best parameters for the model, keys: {'C', 'kernal'}
+        # model = actual ML model for that data set
+        # cfm = confusion matrix
+        # result: txt = text report, json = dictionary object
+        # testTrainData dictionary, keys: {'expinfo_train', 'expinfo_test', 'intent_train', 'intent_test', 'intent_predict'}
+        score, params, model, cfm, rocAuc, txtResult, jsonResult, testTrainData = processMLModel(path, seed)
+        l_accuracy.append(score)
+        l_rocAuc.append(rocAuc)
+        
+        # Print to terminal to see progress and log into the output files
+        metricText = logMLDataTerminal(seed, filename, score, txtResult, params, model, metricText)
+        metricText += "\n\n"+BAR*2+"\n\n"   # formatting
 
-            
-            
-            # Print to terminal to see progress and log into the output files
-            metricText = logMLDataTerminal(seed, filename, score, txtResult, params, model, metricText)
-            metricText += "\n\n"+BAR*2+"\n\n"   # formatting
+        # change this depending on state
+        model_name = DIR_MODEL + filename.split(".csv")[0]+"-Seed_"+str(seed)+".joblib"
+        dump(model, model_name)
+        
+        # Record in dictionary 
+        seedMLData[seed] = {"metrics": jsonResult, "cfm":cfm, "testTrainData": testTrainData, "params": params}
 
-            # change this depending on state
-            model_name = DIR_MODEL + filename.split(".csv")[0]+"-Seed_"+str(seed)+".joblib"
-            dump(model, model_name)
-            
-            # Record in dictionary 
-            seedMLData[seed] = {"metrics": jsonResult, "cfm":cfm, "testTrainData": testTrainData, "params": params}
+        # Collect metrics per json result seed for mean and stdev
+        resultList.append(jsonResult)
+ 
 
-            # Collect metrics per json result seed for mean and stdev
-            resultList.append(jsonResult)
-            
-    # Find Average Metrics
-        # filters keys: find intents 
+        
+# Find Average Metrics
+    # filters keys: find intents 
+    for exp in resultList:
+        keys_metrics = list(exp.keys())
+        keys_statMeasures = list(exp[keys_metrics[0]].keys())
+        
+        
+        filtkeys = []
+        for key in keys_metrics:
+        # extract accuracy
+        
+        # remove non-intents
+            try:
+                int(key)
+            except ValueError:
+                continue
+            filtkeys.append(key)
+    
+    # Collect results
+    avg = {}
+    for intent in filtkeys:
+        # Important data
+        l_precision = []
+        l_recall = []
+        l_f1score = []
+        l_support = []
         for exp in resultList:
-            keys_metrics = list(exp.keys())
-            keys_statMeasures = list(exp[keys_metrics[0]].keys())
-            
-            
-            filtkeys = []
-            for key in keys_metrics:
-            # extract accuracy
-            
-            # remove non-intents
-                try:
-                    int(key)
-                except ValueError:
-                    continue
-                filtkeys.append(key)
-        # Collect results
-        avg = {}
+            measures = exp[intent]
         
-        for intent in filtkeys:
-            # Important data
-            l_precision = []
-            l_recall = []
-            l_f1score = []
-            l_support = []
-            for exp in resultList:
-                measures = exp[intent]
+            l_precision.append(measures['precision'])
+            l_recall.append(measures['recall'])
+            l_f1score.append(measures['f1-score'])
+            l_support.append(measures['support'])
             
-                l_precision.append(measures['precision'])
-                l_recall.append(measures['recall'])
-                l_f1score.append(measures['f1-score'])
-                l_support.append(measures['support'])
-                
-            t_precision = [st.mean(l_precision),st.stdev(l_precision)]
-            t_recall = [st.mean(l_recall),st.stdev(l_recall)]
-            t_f1score = [st.mean(l_f1score),st.stdev(l_f1score)]
-            t_support = [st.mean(l_support),st.stdev(l_support)]
+        t_precision = [st.mean(l_precision),st.stdev(l_precision)]
+        t_recall = [st.mean(l_recall),st.stdev(l_recall)]
+        t_f1score = [st.mean(l_f1score),st.stdev(l_f1score)]
+        t_support = [st.mean(l_support),st.stdev(l_support)]
+    
+        avg[intent] = {'precision': t_precision, 'recall': t_recall, 'f1-score': t_f1score, 'support': t_support}
+
         
-            avg[intent] = {'precision': t_precision, 'recall': t_recall, 'f1-score': t_f1score, 'support': t_support}
-        
+        t_accuracy = [st.mean(l_accuracy),st.stdev(l_accuracy)]
+        t_rocAuc = [st.mean(l_rocAuc),st.stdev(l_rocAuc)]
         
             
     
@@ -133,6 +141,7 @@ for statState in dic:
     
     # Important data
     avgMLStats[statState] = avg
+    avgMLACCROC[statState] = {"accuracy": t_accuracy, "rocAuc": t_rocAuc}
     allMLData[statState] = seedMLData
 
 # Output Json Object file
@@ -142,6 +151,8 @@ with open("allMLDataPickle", "wb") as outfile:
 with open("avgStatsPickle", "wb") as outfile:
     pickle.dump(avgMLStats, outfile)
 
+with open("avgMLACCROCPickle", "wb") as outfile:
+    pickle.dump(avgMLACCROC, outfile)
 
 
 ################################################################################
