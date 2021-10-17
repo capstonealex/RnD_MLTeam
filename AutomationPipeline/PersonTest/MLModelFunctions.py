@@ -3,7 +3,9 @@
 # =============================================================================
 from pdb import set_trace as bp
 from CommandIndex import * 
-
+CSV_STAND = "standCSVData"
+CSV_WALKL = "walkFLCSVData"
+CSV_WALKR = "walkFRCSVData"
 
 ### Step 1: Import all necessary packages ###
 import pandas as pd
@@ -82,7 +84,8 @@ def series_to_supervised(data, n_in=1, n_out=1, dropnan=True):
 # === ML Model Maker Code =====================================================
 # =============================================================================
 
-def timeshifter(csvFile):
+
+def processMLModel(csvFile, seed):
     # 0) Read full data
     data = pd.read_csv(csvFile)
     data.head() # comment one to see the other
@@ -179,29 +182,14 @@ def timeshifter(csvFile):
         
         index += expID_len    # go to next experiment and label
         
-    return(exp_data)
+    #print(exp_data)
 
-
-
-
-
-
-
-
-
-def processMLModel(csvRush, csvKaro):
-    exp_data_Rush = timeshifter(csvRush)
-    exp_data_Karo = timeshifter(csvKaro)    
     ### Step 4: Split into test and training data and normalise dataset ###
     # Splitting the dataset into the Training set and Test set
-    # expinfo = exp_data.iloc[:,0:-2]
-    # intent = exp_data.iloc[:,-2]
-    
-    
-    expinfo_train = exp_data_Rush.iloc[:,0:-2]
-    intent_train = exp_data_Rush.iloc[:,-2]
-    expinfo_test = exp_data_Karo.iloc[:,0:-2]
-    intent_test = exp_data_Karo.iloc[:,-2]
+    expinfo = exp_data.iloc[:,0:-2]
+    intent = exp_data.iloc[:,-2]
+    expinfo_train, expinfo_test, intent_train, intent_test = train_test_split(expinfo, intent, test_size=0.25, random_state=seed) # random_state=0 will give same result, will need to randomise 
+
 
     # Normalise featured set
     # Removes the mean and scales to unit variance
@@ -214,10 +202,10 @@ def processMLModel(csvRush, csvKaro):
     # Look at total variability being above 80%
 
     # Apply PCA to lower the dimension of the data
-    pca=PCA(0.8)
-    pca.fit(expinfo_train)
-    expinfo_train = pca.transform(expinfo_train)
-    expinfo_test = pca.transform(expinfo_test)
+    # pca=PCA(0.8)
+    # pca.fit(expinfo_train)
+    # expinfo_train = pca.transform(expinfo_train)
+    # expinfo_test = pca.transform(expinfo_test)
 
 
     ### Step 6: Determine optimal ML model to use for this state ###
@@ -272,9 +260,9 @@ def processMLModel(csvRush, csvKaro):
 # === Print Metrics to terminal ===============================================
 # =============================================================================
 
-def logMLDataTerminal(filename, score, rocAuc, txtResult, params, model, metricText):
+def logMLDataTerminal(seed, filename, score, rocAuc, txtResult, params, model, metricText):
     #Print to terminal
-    print(filename, "Rush Train Karo Test")
+    print(filename,"- SEED:",seed)
     print("accuracy score: ", 100*score, "%")
     print(txtResult)
     print("rocAuc score: ", rocAuc["score"])
@@ -283,7 +271,7 @@ def logMLDataTerminal(filename, score, rocAuc, txtResult, params, model, metricT
     print()
 
     # Stuff to put into the output files
-    modelReport = ("Filename: " + filename + " Rush Train Karo Test", "Model Score: " + str(score*100)+"%", "rocAuc score: " + str(rocAuc["score"]), txtResult, "Model Details: "+str(model))
+    modelReport = ("Filename: " + filename, "Model Score: " + str(score*100)+"%", "rocAuc score: " + str(rocAuc["score"]), txtResult, "Model Details: "+str(model))
     metricText += "\n".join(modelReport)
     return metricText
 

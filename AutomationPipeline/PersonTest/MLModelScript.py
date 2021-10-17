@@ -10,56 +10,32 @@ import time
 import pickle
 import statistics as st
 from ControlParameters import *
-from FileManager_Karo import *
-from FileManager_Rush import *
 from MLModelFunctions import *
 from ExtractIntentFunctions import *
 from pdb import set_trace as bp
-checkMakeDirectoryModel_Rush()
-
-CSV_STAND = "standCSVData"
-CSV_WALKL = "walkFLCSVData"
-CSV_WALKR = "walkFRCSVData"
+checkMakeDirectoryModel()
 
 # =============================================================================
 # === Sort files into stationary states =======================================
 # =============================================================================
-merge_K_filepaths = glob.glob(DIR_K_MERGE + "*.csv")
-dic_Karo = {}
-dic_Karo[CSV_STAND] = []
-dic_Karo[CSV_WALKL] = []
-dic_Karo[CSV_WALKR] = []
-
-
-merge_R_filepaths = glob.glob(DIR_R_MERGE + "*.csv")
-dic_Rush = {}
-dic_Rush[CSV_STAND] = []
-dic_Rush[CSV_WALKL] = []
-dic_Rush[CSV_WALKR] = []
+merge_filepaths = glob.glob(DIR_MERGE + "*.csv")
+dic = {}
+dic[CSV_STAND] = []
+dic[CSV_WALKL] = []
+dic[CSV_WALKR] = []
 
 # find all merge data files for each stationary state
-for path in merge_K_filepaths:
+for path in merge_filepaths:
     
     if CSV_STAND in path:
-        dic_Karo[CSV_STAND].append(path)
+        dic[CSV_STAND].append(path)
     
     if CSV_WALKL in path:
-        dic_Karo[CSV_WALKL].append(path)
+        dic[CSV_WALKL].append(path)
     
     if CSV_WALKR in path:
-        dic_Karo[CSV_WALKR].append(path)
+        dic[CSV_WALKR].append(path)
 
-
-for path in merge_R_filepaths:
-    
-    if CSV_STAND in path:
-        dic_Rush[CSV_STAND].append(path)
-    
-    if CSV_WALKL in path:
-        dic_Rush[CSV_WALKL].append(path)
-    
-    if CSV_WALKR in path:
-        dic_Rush[CSV_WALKR].append(path)
 # =============================================================================
 # === ML Model Automation Engine ==============================================
 # =============================================================================
@@ -69,7 +45,7 @@ allMLData = {}
 avgMLStats = {}
 allRocAucStats = {}
 start_time = time.time()
-for statState in dic_Karo:
+for statState in dic:
     stateTitle = "\n"+BAR+statState+BAR+"\n\n\n\n"
     print(BAR,statState,BAR)
     metricText += stateTitle
@@ -77,32 +53,36 @@ for statState in dic_Karo:
     #     continue
     
     
-    path_Karo = (dic_Karo[statState])[0]
-    path_Rush = (dic_Rush[statState])[0]
-    
-    filename_Karo = os.path.basename(path_Karo)
-    filename_Rush = os.path.basename(path_Rush)
+    pathlist = dic[statState]
+    # stateMLData = {}
+    for path in pathlist:
+        filename = os.path.basename(path)
         
             
     # -- Outputs of ML Data Generation explained
-    # score = basic accuracy metric
-    # params = best parameters for the model, keys: {'C', 'kernal'}
-    # model = actual ML model for that data set
-    # cfm = confusion matrix
-    # result: txt = text report, json = dictionary object
-    # testTrainData dictionary, keys: {'expinfo_train', 'expinfo_test', 'intent_train', 'intent_test', 'intent_predict'}
+        # score = basic accuracy metric
+        # params = best parameters for the model, keys: {'C', 'kernal'}
+        # model = actual ML model for that data set
+        # cfm = confusion matrix
+        # result: txt = text report, json = dictionary object
+        # testTrainData dictionary, keys: {'expinfo_train', 'expinfo_test', 'intent_train', 'intent_test', 'intent_predict'}
 
-    score, params, model, cfm, rocAuc, txtResult, jsonResult, testTrainData = processMLModel(path_Rush, path_Karo)
-    # Print to terminal to see progress and log into the output files
-    metricText = logMLDataTerminal(statState, score, rocAuc, txtResult, params, model, metricText)
-    metricText += "\n\n"+BAR*2+"\n\n"   # formatting
+        score, params, model, cfm, rocAuc, txtResult, jsonResult, testTrainData = processMLModel(path, SEED_OF_LIFE)
+        # Print to terminal to see progress and log into the output files
+        metricText = logMLDataTerminal(SEED_OF_LIFE, filename, score, rocAuc, txtResult, params, model, metricText)
+        metricText += "\n\n"+BAR*2+"\n\n"   # formatting
 
-    # # change this depending on state
-    # model_name = DIR_MODEL + filename.split(".csv")[0]+"-Seed_"+str(SEED_OF_LIFE)+".joblib"
-    # dump(model, model_name)
-              
+        # # change this depending on state
+        # model_name = DIR_MODEL + filename.split(".csv")[0]+"-Seed_"+str(SEED_OF_LIFE)+".joblib"
+        # dump(model, model_name)
+            
+         
+            
+
+        
+            
     # File writer (clears metric text per stationary state)
-    f = open(DIR_R_MODEL+statState+"Report.txt", 'w')
+    f = open(DIR_MODEL+statState+"Report.txt", 'w')
     f.write(metricText)
     f.close()
     metricText = ""
