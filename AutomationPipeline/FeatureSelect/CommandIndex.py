@@ -1,23 +1,30 @@
 # Stationary
-COM_LeftForward    =  2       # 
-COM_RightForward   =  3       # 
-COM_Standing       =  4       # 
-COM_Sitting        =  5       # 
-
-# STATIONARY_STATES = [COM_LeftForward,COM_RightForward,COM_Standing,COM_Sitting]
-STATIONARY_STATES = [COM_LeftForward,COM_RightForward,COM_Standing]
+COM_LeftForward    =  2       # Upright left foot foward
+COM_RightForward   =  3       # Upright right foot foward
+COM_Standing       =  4       # Standing (feet together)
+COM_Sitting        =  5       # Sitting down
 
 # Transition
 COM_SittingDown    =  6       # sit FROM stand                      
 COM_StandingUp     =  7       # sit TO stand                            
 COM_StepFirstL     =  8       # step FROM stand                         
-COM_StepFirstR     =  9       # UNUSED?                             
+COM_StepFirstR     =  9       # UNUSED                           
 COM_StepLastL      =  10      # step TO stand using LEFT leg        
 COM_StepLastR      =  11      # step TO stand using RIGHT leg       
 COM_StepL          =  12      # continue walking using LEFT leg     
 COM_StepR          =  13      # continue walking using RIGHT leg    
 COM_BackStepR      =  14      # backstep using RIGHT leg            
 COM_BackStepL      =  15      # backstep using LEFT leg             
+
+# Misc
+COM_Init           =  0       # Starting
+COM_InitSitting    =  1       # Starting
+COM_Error          =  16      # Safety
+COM_Debug          =  17      # Safety
+
+
+# STATIONARY_STATES = [COM_LeftForward,COM_RightForward,COM_Standing,COM_Sitting]
+STATIONARY_STATES = [COM_LeftForward,COM_RightForward,COM_Standing]
 
 # TRANSITION_STATES  = [COM_SittingDown, COM_StandingUp, COM_StepFirstL, COM_StepFirstR, COM_StepLastL, COM_StepLastR, COM_StepL ,COM_StepR, COM_BackStepR, COM_BackStepL]
 TRANSITION_STATES  = [COM_StepFirstL, COM_StepFirstR, COM_StepLastL, COM_StepLastR, COM_StepL ,COM_StepR, COM_BackStepR, COM_BackStepL]
@@ -37,11 +44,6 @@ STR_BackStepL      =  "stand~back"      # backstep using LEFT leg
 # TODO: WalkFL and WalkFR
     # determine if clusters is confused between L & R leg
 
-# Misc
-COM_Init           =  0       # Starting
-COM_InitSitting    =  1       # Starting
-COM_Error          =  16      # Safety
-COM_Debug          =  17      # Safety
 
 ALLSTATES_DIC = {
     -1 : "Loading"     ,

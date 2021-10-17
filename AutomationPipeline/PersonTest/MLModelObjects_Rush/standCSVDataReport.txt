@@ -1,0 +1,23 @@
+
+--------------------------------------------------standCSVData--------------------------------------------------
+
+
+
+Filename: standCSVData Rush Train Karo Test
+Model Score: 76.19047619047619%
+rocAuc score: 0.975609756097561
+              precision    recall  f1-score   support
+
+           6       1.00      1.00      1.00         1
+           8       1.00      0.76      0.86        41
+          15       0.00      0.00      0.00         0
+
+    accuracy                           0.76        42
+   macro avg       0.67      0.59      0.62        42
+weighted avg       1.00      0.76      0.86        42
+
+Model Details: SVC(C=0.7105263157894737, decision_function_shape='ovo', kernel='sigmoid',
+    probability=True)
+
+----------------------------------------------------------------------------------------------------
+

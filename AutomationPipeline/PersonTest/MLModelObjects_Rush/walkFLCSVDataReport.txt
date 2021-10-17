@@ -1,0 +1,21 @@
+
+--------------------------------------------------walkFLCSVData--------------------------------------------------
+
+
+
+Filename: walkFLCSVData Rush Train Karo Test
+Model Score: 51.61290322580645%
+rocAuc score: 0.3962101636520241
+              precision    recall  f1-score   support
+
+          11       0.28      0.26      0.27        43
+          13       0.62      0.65      0.64        81
+
+    accuracy                           0.52       124
+   macro avg       0.45      0.46      0.45       124
+weighted avg       0.51      0.52      0.51       124
+
+Model Details: SVC(C=0.5, decision_function_shape='ovo', probability=True)
+
+----------------------------------------------------------------------------------------------------
+

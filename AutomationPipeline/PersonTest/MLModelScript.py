@@ -1,0 +1,192 @@
+"""
+ML MODEL CREATION CODE
+The University of Melbourne 2021
+Engineering Capstone Project: Advanced Lower Exoskeleton (ALEX) RnD Team
+Author(s): Karoline Bernacki, David Pham
+Date created:  07/07/2021
+Date modified: 21/09/2021
+"""
+import time
+import pickle
+import statistics as st
+from ControlParameters import *
+from FileManager_Karo import *
+from FileManager_Rush import *
+from MLModelFunctions import *
+from ExtractIntentFunctions import *
+from pdb import set_trace as bp
+checkMakeDirectoryModel_Rush()
+
+CSV_STAND = "standCSVData"
+CSV_WALKL = "walkFLCSVData"
+CSV_WALKR = "walkFRCSVData"
+
+# =============================================================================
+# === Sort files into stationary states =======================================
+# =============================================================================
+merge_K_filepaths = glob.glob(DIR_K_MERGE + "*.csv")
+dic_Karo = {}
+dic_Karo[CSV_STAND] = []
+dic_Karo[CSV_WALKL] = []
+dic_Karo[CSV_WALKR] = []
+
+
+merge_R_filepaths = glob.glob(DIR_R_MERGE + "*.csv")
+dic_Rush = {}
+dic_Rush[CSV_STAND] = []
+dic_Rush[CSV_WALKL] = []
+dic_Rush[CSV_WALKR] = []
+
+# find all merge data files for each stationary state
+for path in merge_K_filepaths:
+    
+    if CSV_STAND in path:
+        dic_Karo[CSV_STAND].append(path)
+    
+    if CSV_WALKL in path:
+        dic_Karo[CSV_WALKL].append(path)
+    
+    if CSV_WALKR in path:
+        dic_Karo[CSV_WALKR].append(path)
+
+
+for path in merge_R_filepaths:
+    
+    if CSV_STAND in path:
+        dic_Rush[CSV_STAND].append(path)
+    
+    if CSV_WALKL in path:
+        dic_Rush[CSV_WALKL].append(path)
+    
+    if CSV_WALKR in path:
+        dic_Rush[CSV_WALKR].append(path)
+# =============================================================================
+# === ML Model Automation Engine ==============================================
+# =============================================================================
+BAR = 50*'-'
+metricText = ""
+allMLData = {}
+avgMLStats = {}
+allRocAucStats = {}
+start_time = time.time()
+for statState in dic_Karo:
+    stateTitle = "\n"+BAR+statState+BAR+"\n\n\n\n"
+    print(BAR,statState,BAR)
+    metricText += stateTitle
+    # if statState =='walkFLCSVData':
+    #     continue
+    
+    
+    path_Karo = (dic_Karo[statState])[0]
+    path_Rush = (dic_Rush[statState])[0]
+    
+    filename_Karo = os.path.basename(path_Karo)
+    filename_Rush = os.path.basename(path_Rush)
+        
+            
+    # -- Outputs of ML Data Generation explained
+    # score = basic accuracy metric
+    # params = best parameters for the model, keys: {'C', 'kernal'}
+    # model = actual ML model for that data set
+    # cfm = confusion matrix
+    # result: txt = text report, json = dictionary object
+    # testTrainData dictionary, keys: {'expinfo_train', 'expinfo_test', 'intent_train', 'intent_test', 'intent_predict'}
+
+    score, params, model, cfm, rocAuc, txtResult, jsonResult, testTrainData = processMLModel(path_Rush, path_Karo)
+    # Print to terminal to see progress and log into the output files
+    metricText = logMLDataTerminal(statState, score, rocAuc, txtResult, params, model, metricText)
+    metricText += "\n\n"+BAR*2+"\n\n"   # formatting
+
+    # # change this depending on state
+    # model_name = DIR_MODEL + filename.split(".csv")[0]+"-Seed_"+str(SEED_OF_LIFE)+".joblib"
+    # dump(model, model_name)
+              
+    # File writer (clears metric text per stationary state)
+    f = open(DIR_R_MODEL+statState+"Report.txt", 'w')
+    f.write(metricText)
+    f.close()
+    metricText = ""
+    
+    # Important data
+    allRocAucStats[statState] = rocAuc
+    avgMLStats[statState] = jsonResult
+    allMLData[statState] = {"metrics": jsonResult, "cfm": cfm, "testTrainData": testTrainData, "params":params}
+
+# Output Json Object file
+with open("allMLDataPickle", "wb") as outfile:
+    pickle.dump(allMLData, outfile)
+
+# Simplified entry just the jsonData per statonary state
+with open("avgStatsPickle", "wb") as outfile:
+    pickle.dump(avgMLStats, outfile)
+
+with open("allRocAucStatsPickle", "wb") as outfile:
+    pickle.dump(allRocAucStats, outfile)
+
+print("--- %s seconds ---" % (time.time() - start_time))
+################################################################################
+# Dictionary JSON structure
+#
+# allMLDATA = {
+#   <str>stationaryState: {
+#                       <int>seed: {
+#                                       "metrics"       : jsonResult,
+#                                       "cfm"           : cfm,
+#                                       "testTrainData" : testTrainData,
+#                                       "params"        : params
+#                                   }
+#                               }
+#                           }
+#               }
+
+'''
+-- Dictionary layers --
+
+allMLDATA = { <str>stationaryState    :   {} }
+
+{ <str>stationaryState } = { <int>seed  :   {} }
+
+{ <int>seed } = { 
+                "metrics"       : jsonResult,
+                "cfm"           : cfm,
+                "testTrainData" : testTrainData,
+                "params"        : params
+                }
+                    jsonResult = {
+                            '0'     : { 'precision': 1.0,
+                                        'recall': 1.0,
+                                        'f1-score': 1.0,
+                                        'support': 20
+                                        },
+                            '1'     : { 'precision': 1.0,
+                                        'recall': 1.0,
+                                        'f1-score': 1.0,
+                                        'support': 28
+                                        },
+                    'accuracy'      : 1.0,
+                    'macro avg'     : { 'precision': 1.0,
+                                        'recall': 1.0,
+                                        'f1-score': 1.0,
+                                        'support': 48
+                                        },
+                    'weighted avg'  : { 'precision': 1.0,
+                                        'recall': 1.0,
+                                        'f1-score': 1.0,
+                                        'support': 48
+                                        }
+                    }
+
+                    cfm = [tp, .. , fn]
+                    testTrainData = {                  
+                                    "expinfo_train"  : expinfo_train  = [[]] <float: intent instance -x- timeshift data >,
+                                    "expinfo_test"   : expinfo_test   = [[]] <float: intent instance -x- timeshift data >,
+                                    "intent_train"   : intent_train   = []   <int: enum(0,1)>,
+                                    "intent_test"    : intent_test    = []   <int: enum(0,1)>,
+                                    "intent_predict" : intent_predict = []   <int: enum(0,1)>
+                                    },
+                    params = {  'C'     : <float>, 
+                                'kernel': <str: enum('linear', 'rbf,...etc)>
+                                'gamma' : <float: when poly, sig, rbf> || 0 (where 0 is undefined)
+}
+
+'''

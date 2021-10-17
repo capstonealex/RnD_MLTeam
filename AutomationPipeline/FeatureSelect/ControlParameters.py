@@ -12,8 +12,8 @@ SAMPLE_RATE = 100       # desired samples per second (must be value between 1 to
 # Crutches: L/R --> Forces: {x,y,z}, Torques: {x,y,z} 
 
 # - time                    x 01     ind: 0
-# - CrutchReadingsL         x 06     ind: 01 - 06        # I think Left?
-# - CrutchReadingsR         x 06     ind: 07 - 12        # I think right?
+# - CrutchReadings_Left     x 06     ind: 01 - 06
+# - CrutchReadings_Right    x 06     ind: 07 - 12
 # - ForcePlateReadings      x 16     ind: 13 - 28
 # - MotorPositions          x 04     ind: 29 - 32
 # - MotorVelocities         x 04     ind: 33 - 36

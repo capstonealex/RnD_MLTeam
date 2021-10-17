@@ -185,14 +185,14 @@ def processMLModel(csvFile, seed):
         
     #print(exp_data)
 
-    ### Step 4: Split into test and training data and normalise dataset ###
+    ### Step 4a: Split into test and training data and normalise dataset ###
     # Splitting the dataset into the Training set and Test set
     expinfo = exp_data.iloc[:,0:-2]
     intent = exp_data.iloc[:,-2]
     expinfo_train, expinfo_test, intent_train, intent_test = train_test_split(expinfo, intent, test_size=0.25, random_state=seed) # random_state=0 will give same result, will need to randomise 
 
 
-    # Normalise featured set
+    # Step 4b: Normalise featured set
     # Removes the mean and scales to unit variance
     sc = StandardScaler()
     expinfo_train = sc.fit_transform(expinfo_train)
